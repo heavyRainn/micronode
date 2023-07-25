@@ -1,0 +1,30 @@
+version: '3'
+services:
+  http-service:
+    build:
+      context: ./http-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+    networks:
+      - app_network
+  queue-service:
+    build:
+      context: ./queue-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+    networks:
+      - app_network
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app_network
+
+networks:
+  app_network:
